@@ -6,6 +6,9 @@ import Blog from "./component/Blog";
 import Store from "./component/Store";
 import ShoppingCar from "./component/ShoppingCar";
 import { useState } from "react";
+import { Provider } from "react-redux";
+import { createStore } from "redux";
+import reducer from "./reducers/shopReducer";
 
 function App() {
   const products = [
@@ -83,31 +86,35 @@ function App() {
     }
   };
 
+  const store = createStore(reducer);
+
   return (
-    <Container>
-      <Menu>
-        <NavLink to="/">Inicio</NavLink>
-        <NavLink to="/blog">Blog</NavLink>
-        <NavLink to="/tienda">Tienda</NavLink>
-      </Menu>
-      <main>
-        <Routes>
-          <Route path="*" element={<Error404 />} />
-          <Route path="/" element={<Initial />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route
-            path="/tienda"
-            element={<Store products={products} addProduct={addProduct} />}
+    <Provider store={store}>
+      <Container>
+        <Menu>
+          <NavLink to="/">Inicio</NavLink>
+          <NavLink to="/blog">Blog</NavLink>
+          <NavLink to="/tienda">Tienda</NavLink>
+        </Menu>
+        <main>
+          <Routes>
+            <Route path="*" element={<Error404 />} />
+            <Route path="/" element={<Initial />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route
+              path="/tienda"
+              element={<Store products={products} addProduct={addProduct} />}
+            />
+          </Routes>
+        </main>
+        <aside>
+          <ShoppingCar
+            shoppingCar={shoppingCar}
+            setShoppingCar={setShoppingCar}
           />
-        </Routes>
-      </main>
-      <aside>
-        <ShoppingCar
-          shoppingCar={shoppingCar}
-          setShoppingCar={setShoppingCar}
-        />
-      </aside>
-    </Container>
+        </aside>
+      </Container>
+    </Provider>
   );
 }
 
