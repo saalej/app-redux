@@ -25,6 +25,10 @@ function App() {
       id: 4,
       name: "Samsung Galaxy Tab S6 Lite",
     },
+    {
+      id: 5,
+      name: "Nintendo 3DS XL",
+    },
   ];
 
   const [shoppingCar, setShoppingCar] = useState([]);
