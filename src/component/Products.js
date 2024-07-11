@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from "react-redux";
 import styled from "styled-components";
 
 const Products = ({ products, addProduct }) => {
@@ -59,4 +60,22 @@ const Button = styled.button`
   }
 `;
 
-export default Products;
+const mapStateToProps = (state) => {
+  return {
+    products: state.Products,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addProduct: (id, name) => {
+      dispatch({
+        type: "ADD_SHOPPING_CAR",
+        id: id,
+        name: name,
+      });
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Products);

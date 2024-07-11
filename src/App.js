@@ -5,87 +5,11 @@ import Error404 from "./component/Error404";
 import Blog from "./component/Blog";
 import Store from "./component/Store";
 import ShoppingCar from "./component/ShoppingCar";
-import { useState } from "react";
 import { Provider } from "react-redux";
 import { createStore } from "redux";
 import reducer from "./reducers/shopReducer";
 
-function App() {
-  const products = [
-    {
-      id: 1,
-      name: "Terranaitor",
-    },
-    {
-      id: 2,
-      name: "Dell G15 Ryzen Edition",
-    },
-    {
-      id: 3,
-      name: "Motorola Edge 40",
-    },
-    {
-      id: 4,
-      name: "Samsung Galaxy Tab S6 Lite",
-    },
-    {
-      id: 5,
-      name: "Nintendo 3DS XL",
-    },
-  ];
-
-  const [shoppingCar, setShoppingCar] = useState([]);
-
-  const addProduct = (id, name) => {
-    // Si el carrito no tiene elementos, entonces agregamos directamente
-    if (shoppingCar.length === 0) {
-      setShoppingCar([
-        {
-          id,
-          name,
-          amount: 1,
-        },
-      ]);
-    } else {
-      // En caso de tener más productos, hay que revisar que el carrito no
-      // tenga ya el producto agregado.
-      // Si ya lo tiene, se debe actualizar el valor.
-      // Sino se agrega.
-
-      const newShoppingCar = [...shoppingCar];
-
-      // Comprobar si ya existe el ID a agregar en el carrito
-      const existProduct =
-        newShoppingCar.filter((product) => {
-          return product.id === id;
-        }).length > 0;
-
-      if (existProduct) {
-        // Si existe el producto, se debo localizar el producto y actualizarlo
-        newShoppingCar.forEach((product, index) => {
-          if (id === product.id) {
-            const amount = newShoppingCar[index].amount;
-            newShoppingCar[index] = {
-              id,
-              name,
-              amount: amount + 1,
-            };
-          }
-        });
-
-        // De otra forma, entonces agregamos el producto al arreglo
-      } else {
-        newShoppingCar.push({
-          id,
-          name,
-          amount: 1,
-        });
-      }
-
-      setShoppingCar(newShoppingCar);
-    }
-  };
-
+const App = () => {
   const store = createStore(reducer);
 
   return (
@@ -101,22 +25,16 @@ function App() {
             <Route path="*" element={<Error404 />} />
             <Route path="/" element={<Initial />} />
             <Route path="/blog" element={<Blog />} />
-            <Route
-              path="/tienda"
-              element={<Store products={products} addProduct={addProduct} />}
-            />
+            <Route path="/tienda" element={<Store />} />
           </Routes>
         </main>
         <aside>
-          <ShoppingCar
-            shoppingCar={shoppingCar}
-            setShoppingCar={setShoppingCar}
-          />
+          <ShoppingCar />
         </aside>
       </Container>
     </Provider>
   );
-}
+};
 
 const Container = styled.div`
   max-width: 1000px;

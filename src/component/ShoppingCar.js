@@ -1,19 +1,22 @@
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
+import { connect } from "react-redux";
 import styled from "styled-components";
 
-const ShoppingCar = ({ shoppingCar, setShoppingCar }) => {
+const ShoppingCar = ({ shoppingCar, eraseShoppingCar }) => {
+  console.log(shoppingCar);
+
   return (
     <div>
       <TitleContainer>
         Carrito de compras
-        <Button type="reset" onClick={() => setShoppingCar([])}>
+        <Button type="reset" onClick={() => eraseShoppingCar()}>
           <FontAwesomeIcon icon={faTrashCan} />
         </Button>
       </TitleContainer>
 
-      {shoppingCar.length > 0 ? (
+      {shoppingCar && shoppingCar.length > 0 ? (
         shoppingCar.map((product, index) => {
           return (
             <Product key={index}>
@@ -57,4 +60,20 @@ const NameProduct = styled.p`
   color: black;
 `;
 
-export default ShoppingCar;
+const mapStateToProps = (state) => {
+  return {
+    shoppingCar: state.shoppingCar,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    eraseShoppingCar: () => {
+      dispatch({
+        type: "ERASE_SHOPPING_CAR",
+      });
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ShoppingCar);
